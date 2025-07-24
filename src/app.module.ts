@@ -6,9 +6,10 @@ import { DatabaseModule } from './database/database.module';
 import { CategoriesModule } from './categories/categories.module';
 import { ProductModule } from './product/product.module';
 import { CurrentUserMiddleware } from './utility/middlewares/current-user.middleware';
+import { ReviewsModule } from './reviews/reviews.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({isGlobal:true}),DatabaseModule, UserModule, AuthModule, CategoriesModule, ProductModule],
+  imports: [ConfigModule.forRoot({isGlobal:true}),DatabaseModule, UserModule, AuthModule, CategoriesModule, ProductModule, ReviewsModule],
   controllers: [],
   providers: [],
 })

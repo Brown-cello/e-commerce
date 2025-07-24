@@ -18,12 +18,14 @@ export class CategoriesController {
   create(@Body() createCategoryDto: CreateCategoryDto,@CurrentUser() currentUser:User){
     return this.categoriesService.create(createCategoryDto,currentUser );
   }
-
+  @UseGuards(AuthGuard(),RolesGuard)
+  @Roles('admin','user')
   @Get()
   async findAll() {
     return await this.categoriesService.findAll();
   }
-
+  @UseGuards(AuthGuard(),RolesGuard)
+  @Roles('admin')
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.categoriesService.findOne(id);

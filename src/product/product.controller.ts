@@ -2,41 +2,41 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { RolesGuard } from 'src/auth/guard/role.guard';
-import { Roles } from 'src/utility/decorators/role';
-import { UserRole } from 'src/utility/enum/user.role.enum';
-import { CurrentUser } from 'src/utility/decorators/current-user.decorator';
-import { User } from 'src/user/entities/user.entity';
-import { ProductService } from './product.service';
+import { CurrentUser } from '../utility/decorators/current-user.decorator';
+import { User } from '../user/entities/user.entity';
+import { ProductsService } from './product.service';
 
 @Controller('products')
 export class ProductsController {
-  constructor(private readonly productsService: ProductService) { }
+  constructor(private readonly productsService: ProductsService) { }
 
-  @UseGuards(AuthGuard(), RolesGuard)
-  @Roles(UserRole.ADMIN)
+  @UseGuards(AuthGuard())
   @Post()
   async create(@Body() createProductDto: CreateProductDto,@CurrentUser() currentUser:User) {
     return this.productsService.create(createProductDto,currentUser);
   }
 
+  @UseGuards(AuthGuard())
   @Get()
   async findAll() {
     return  this.productsService.findAll();
   }
 
+  @UseGuards(AuthGuard())
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.productsService.findOne(id);
   }
 
+  @UseGuards(AuthGuard())
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productsService.update(id, updateProductDto);
+  update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto, @CurrentUser() currentUser:User) {
+    return this.productsService.update(id, updateProductDto,currentUser);
   }
 
+  @UseGuards(AuthGuard())
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.productsService.remove(+id);
+    return this.productsService.remove(id);
   }
 }
